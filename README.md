@@ -26,13 +26,13 @@ Analyze gene expression changes in airway cells after dexamethasone treatment.
 6. Ran enrichment (GO + KEGG)
 7. Created GO barplot → `results/figures/go_barplot.pdf`
 
-## Key Results (draft)
+## Partial results (draft)
 - ~4000 significant genes (padj < 0.05)
 - Clear transcriptional response to dexamethasone
 
 ## Results
 
-### Differential Expression Analysis
+### DE Analysis
 
 Differential gene expression analysis using DESeq2 identified approximately 4000 genes with significant expression changes (adjusted p-value < 0.05) between dexamethasone-treated and untreated airway smooth muscle cells. These results indicate a broad transcriptional response to glucocorticoid treatment.
 
