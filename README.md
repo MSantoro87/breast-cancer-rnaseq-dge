@@ -40,7 +40,7 @@ Specifically:
 
 ## 🧪 Analysis Workflow
 
-### 1. Experimental Design
+## 1. Experimental Design
 A DESeq2 model was constructed to account for both:
 - donor-specific variability (`cell`)
 - treatment effect (`dex`)
@@ -49,13 +49,13 @@ A DESeq2 model was constructed to account for both:
 design = ~ cell + dex
 
 
-### 2. Differential Expression Analysis
+## 2. Differential Expression Analysis
 - Statistical testing performed using DESeq2
 - Genes filtered based on adjusted p-value (padj < 0.05)
 
 This defines a dexamethasone-responsive gene set.
 
-### 3. Quality Control & Diagnostics
+## 3. Quality Control & Diagnostics
 
 To validate the robustness of the analysis:
 
@@ -64,28 +64,27 @@ To validate the robustness of the analysis:
 - Dispersion plot: gene-wise variance modeling
 - Sample distance heatmap: clustering of biological replicates
 
-### 4. Gene-Level Visualization
+## 4. Gene-Level Visualization
 - Volcano plot: global differential expression landscape
 - Heatmap: top 50 differentially expressed genes
 - Counts plot: expression pattern of representative genes
 
-### 5. Functional Enrichment Analysis
+## 5. Functional Enrichment Analysis
 Gene Ontology (GO) enrichment
 KEGG pathway analysis
 
 These analyses contextualize the transcriptional response in terms of biological processes and pathways.
 
-### Results Transcriptional Response
+## Results Transcriptional Response
 
-Approximately ~4000 genes were significantly differentially expressed between treated and untreated samples, indicating a strong transcriptional response to dexamethasone.
-
+Approximately ~4000 genes were significantly differentially expressed between treated and untreated samples, indicating a strong transcriptional response to dexamethasone. 
 This gene set defines a treatment-responsive transcriptional program.
 
-### Sample-Level Structure
+## Sample-Level Structure
 
 PCA analysis shows clear separation between treated and untreated samples, confirming a strong treatment effect. Clustering also reflects donor-specific variability, validating the experimental design.
 
-### Model Diagnostics
+## Model Diagnostics
 -MA plot confirms expected distribution of fold changes
 -Dispersion estimates indicate appropriate modeling of variability
 -Sample distance heatmap shows clustering by biological condition
