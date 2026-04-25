@@ -1,31 +1,31 @@
-# RNA-seq Differential Expression Analysis (Airway Dataset)
+# RNA-seq Differential Expression Analysis: Dexamethasone Response in Airway Cells
 
 ## 📌 Overview
-This project implements a **reproducible RNA-seq analysis pipeline** to investigate transcriptional changes in human airway smooth muscle cells following **dexamethasone treatment**.
+This project implements a **reproducible RNA-seq analysis workflow** to characterize the transcriptional response of human airway smooth muscle cells to **dexamethasone treatment**.
 
-The workflow integrates:
-- Differential expression analysis (DESeq2)
-- Quality control and diagnostics
-- Data visualization
-- Functional enrichment analysis (GO / KEGG)
-
-This repository is designed to demonstrate **best practices in computational biology**, including reproducibility, structured pipelines, and version-controlled development.
+Beyond standard differential expression analysis, the study aims to define a **treatment-responsive gene program** and interpret its biological significance using functional enrichment and visualization.
 
 ---
 
-## 🎯 Objective
-To identify gene expression changes induced by dexamethasone and uncover biologically relevant pathways associated with its anti-inflammatory effects.
+## 🎯 Biological Question
+How does dexamethasone treatment reshape the transcriptional landscape of airway smooth muscle cells?
+
+Specifically:
+- Which genes are significantly regulated?
+- What biological processes are affected?
+- Can a coherent **transcriptional program** be identified?
 
 ---
 
 ## 🧬 Dataset
-- Source: Bioconductor `airway` package  
+- Source: Bioconductor `airway` dataset  
 - Samples: 8 (treated vs untreated)  
 - Data type: RNA-seq count data  
+- Design: paired biological samples across different donors  
 
 ---
 
-## ⚙️ Environment
+## ⚙️ Computational Environment
 - OS: Ubuntu 20.04  
 - R version: 4.5.2  
 
@@ -38,118 +38,114 @@ To identify gene expression changes induced by dexamethasone and uncover biologi
 
 ---
 
-## 🧪 Workflow
+## 🧪 Analysis Workflow
 
-### 1. Data Loading & Exploration
-- Loaded airway dataset and inspected metadata
-- Identified experimental variables (`cell`, `dex`)
+### 1. Experimental Design
+A DESeq2 model was constructed to account for both:
+- donor-specific variability (`cell`)
+- treatment effect (`dex`)
+
+```r
+design = ~ cell + dex
+
 
 ### 2. Differential Expression Analysis
-- Built DESeq2 model: `~ cell + dex`
-- Controlled for donor variability
-- Performed statistical testing
+- Statistical testing performed using DESeq2
+- Genes filtered based on adjusted p-value (padj < 0.05)
+
+This defines a dexamethasone-responsive gene set.
 
 ### 3. Quality Control & Diagnostics
-- PCA analysis of samples
-- MA plot for expression changes
-- Dispersion plot for model quality
-- Sample-to-sample distance heatmap
 
-### 4. Visualization of Differential Expression
-- Volcano plot
-- Heatmap of top 50 differentially expressed genes
-- Counts plot for top differentially expressed gene
+To validate the robustness of the analysis:
 
-### 5. Gene Filtering
-- Selected significant genes (adjusted p-value < 0.05)
+- PCA: global structure of samples
+- MA plot: fold-change vs expression relationship
+- Dispersion plot: gene-wise variance modeling
+- Sample distance heatmap: clustering of biological replicates
 
-### 6. Functional Enrichment
-- Gene Ontology (GO) enrichment
-- KEGG pathway analysis
-- GO barplot and dotplot visualization
+### 4. Gene-Level Visualization
+- Volcano plot: global differential expression landscape
+- Heatmap: top 50 differentially expressed genes
+- Counts plot: expression pattern of representative genes
 
----
+### 5. Functional Enrichment Analysis
+Gene Ontology (GO) enrichment
+KEGG pathway analysis
 
-## 📊 Results
+These analyses contextualize the transcriptional response in terms of biological processes and pathways.
 
-### Differential Expression
-Approximately **~4000 genes** were significantly differentially expressed (adjusted p-value < 0.05) between dexamethasone-treated and untreated samples, indicating a broad transcriptional response.
+### Results Transcriptional Response
+
+Approximately ~4000 genes were significantly differentially expressed between treated and untreated samples, indicating a strong transcriptional response to dexamethasone.
+
+This gene set defines a treatment-responsive transcriptional program.
 
 ### Sample-Level Structure
-PCA analysis revealed clear separation between treated and untreated samples, confirming a strong transcriptional shift induced by dexamethasone. Sample clustering also reflects donor-specific variability, validating the inclusion of `cell` in the model design.
+
+PCA analysis shows clear separation between treated and untreated samples, confirming a strong treatment effect. Clustering also reflects donor-specific variability, validating the experimental design.
 
 ### Model Diagnostics
-- MA plot shows expected distribution of fold changes across expression levels  
-- Dispersion estimates confirm appropriate modeling of gene-wise variability  
-- Sample distance heatmap demonstrates clustering by biological condition  
+-MA plot confirms expected distribution of fold changes
+-Dispersion estimates indicate appropriate modeling of variability
+-Sample distance heatmap shows clustering by biological condition
+-Gene-Level Insights
+-Volcano plot highlights both upregulated and downregulated genes
+-Heatmap reveals distinct expression patterns driven by treatment
+-Individual gene plots confirm strong differential expression signals
+-Functional Interpretation
 
-### Gene-Level Insights
-- Volcano plot highlights both upregulated and downregulated genes  
-- Heatmap reveals distinct treatment-specific expression patterns  
-- Counts plot confirms strong differential expression for top genes  
+-Enrichment analysis reveals that the dexamethasone-responsive gene program is associated with:
 
-### Functional Enrichment
-GO enrichment analysis identified significant involvement in:
-- immune response  
-- inflammatory pathways  
-- cellular stress processes  
+-Immune response pathways
+-Inflammatory signaling
+-Cellular stress responses
 
-KEGG analysis highlighted pathways associated with:
-- signaling cascades  
-- glucocorticoid-mediated regulation  
+-KEGG pathways further highlight:
 
----
+regulatory signaling cascades
+glucocorticoid-mediated biological processes
 
-## 🧠 Interpretation
-Dexamethasone induces coordinated transcriptional changes affecting immune and inflammatory pathways. This is consistent with its role as a **glucocorticoid with anti-inflammatory and immunomodulatory effects**.
+🧠 Biological Interpretation
 
-This project demonstrates how RNA-seq analysis can extract biologically meaningful insights through a **reproducible computational workflow**.
+Dexamethasone induces a coordinated transcriptional program consistent with its role as a glucocorticoid regulator of inflammation.
 
----
+The observed downregulation of immune-related pathways and modulation of signaling processes suggest suppression of inflammatory activity, aligning with known pharmacological effects.
 
-## 📷 Example Outputs
+This analysis demonstrates how RNA-seq data can be leveraged to uncover mechanistic insights into treatment response.
 
-### PCA Plot
-![PCA](results/figures/pca_samples.png)
+- PCA Plot
 
-### Volcano Plot
-![Volcano](results/figures/volcano_plot.png)
+- Volcano Plot
 
-### Heatmap
-![Heatmap](results/figures/heatmap_top50.png)
+- Heatmap
 
-### MA Plot
-![MA Plot](results/figures/ma_plot.png)
+- MA Plot
 
-### Dispersion Plot
-![Dispersion](results/figures/dispersion_plot.png)
+- Dispersion Plot
 
-### GO Enrichment (Dotplot)
-![GO Dotplot](results/figures/go_dotplot.png)
+- GO Enrichment (Dotplot)
 
----
-
-## 📁 Project Structure
-
+📁 Project Structure
+.
 ├── data/
 ├── environment/
 ├── metadata/
 ├── results/
-│ ├── figures/
-│ └── tables/
+│   ├── figures/
+│   └── tables/
 ├── scripts/
 └── README.md
+🔁 Reproducibility
 
+Run the full pipeline:
 
----
+- Rscript scripts/02_deseq2_analysis.R
+- Rscript scripts/03_enrichment_analysis.R
+- Rscript scripts/04_interpretation_visualizations.R
 
-## ⚠️ Notes
-- Fixed plotting device issues using `dev.off()`
-- Ensured reproducibility by running analysis through scripts
-- Avoided saving R workspace to maintain clean pipeline execution
-
----
-
-## 🔁 Reproducibility
-
-Work in progress.
+🚀 Future Work
+- Integrate machine learning (Python) to classify treatment conditions
+- Apply workflow to cancer RNA-seq datasets
+- Perform gene module and network analysis
+- Extend enrichment analysis with additional databases
