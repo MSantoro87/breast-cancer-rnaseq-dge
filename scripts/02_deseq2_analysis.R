@@ -1,4 +1,43 @@
 # 02_deseq2_analysis.R
+#
+# Purpose:
+#   Perform differential gene expression analysis on RNA-seq count data
+#   using DESeq2. The script identifies genes that are significantly
+#   regulated in response to dexamethasone treatment in airway cells
+#   and generates a volcano plot for visualization.
+#
+# Input:
+#   - Airway RNA-seq dataset from Bioconductor (`airway` package)
+#   - Experimental design:
+#       ~ cell + dex
+#     where:
+#       cell = donor / biological replicate
+#       dex  = treatment condition (trt vs untrt)
+#
+# Output:
+#   - Differential expression results:
+#       results/tables/deseq2_results.csv
+#   - Volcano plot:
+#       results/figures/volcano_plot.pdf
+#
+# Method:
+#   - DESeq2 pipeline:
+#       1. Create DESeqDataSet
+#       2. Normalize counts
+#       3. Estimate dispersion
+#       4. Fit negative binomial model
+#       5. Perform statistical testing (Wald test)
+#
+# Notes:
+#   - The reference level for treatment is set to "untrt"
+#   - Results include log2 fold changes and adjusted p-values (FDR)
+#   - Volcano plot highlights significantly regulated genes
+#
+# Example usage:
+#   Rscript scripts/02_deseq2_analysis.R
+
+
+# 02_deseq2_analysis.R
 # Differential expression analysis using DESeq2 on airway dataset
 
 # Set library path
@@ -55,6 +94,23 @@ EnhancedVolcano(
 
 dev.off()
 
+png("results/figures/volcano_plot.png", width = 1000, height = 800)
+
+EnhancedVolcano(
+  res,
+  lab = rownames(res),
+  x = "log2FoldChange",
+  y = "pvalue",
+  pCutoff = 0.05,
+  FCcutoff = 1,
+  title = "Differential Expression: Dexamethasone Treatment",
+  subtitle = "Airway RNA-seq dataset"
+)
+
+dev.off()
+
+
+
 # Heatmap (top 50 genes)
 library(pheatmap)
 
@@ -74,3 +130,5 @@ pheatmap(
 )
 
 dev.off()
+
+cat("DESeq2 analysis completed. Results saved.\n")

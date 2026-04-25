@@ -1,4 +1,42 @@
 # 03_enrichment_analysis.R
+#
+# Purpose:
+#   Perform functional enrichment analysis on significantly differentially
+#   expressed genes identified by DESeq2. The script maps genes to biological
+#   processes and pathways using the enrichR API and summarizes the results
+#   through tables and visualization.
+#
+# Input:
+#   - Differential expression results:
+#       results/tables/deseq2_results.csv
+#   - Gene annotation derived from airway dataset (gene_id → gene symbol)
+#
+# Output:
+#   - Gene Ontology (GO) enrichment table:
+#       results/tables/go_enrichment.csv
+#   - KEGG pathway enrichment table:
+#       results/tables/kegg_enrichment.csv
+#   - GO enrichment barplot:
+#       results/figures/go_barplot.pdf
+#
+# Method:
+#   - Filter significant genes (padj < 0.05)
+#   - Map Ensembl gene IDs to gene symbols
+#   - Perform enrichment using enrichR:
+#       • GO Biological Process 2021
+#       • KEGG 2021 Human
+#   - Visualize top enriched GO terms
+#
+# Notes:
+#   - Only genes with valid gene symbols are used for enrichment
+#   - Results are ranked by adjusted p-value
+#   - Enrichment reflects overrepresented biological processes in the
+#     dexamethasone-responsive gene set
+#
+# Example usage:
+#   Rscript scripts/03_enrichment_analysis.R
+
+# 03_enrichment_analysis.R
 # Functional enrichment analysis using enrichR
 # Input: DESeq2 results table
 # Output: GO and KEGG enrichment tables + GO barplot
@@ -65,28 +103,23 @@ write.csv(
 
 # Create GO barplot
 go <- enrich_results[["GO_Biological_Process_2021"]]
-go_sorted <- go[order(go$Adjusted.P.value), ]
-top_go <- go_sorted[1:10, ]
 
-go_plot <- ggplot(
-  top_go,
-  aes(x = reorder(Term, Combined.Score), y = Combined.Score)
-) +
-  geom_bar(stat = "identity") +
+go_top <- go[order(go$Adjusted.P.value), ][1:10, ]
+
+p <- ggplot(go_top, aes(
+  x = reorder(Term, -Adjusted.P.value),
+  y = -log10(Adjusted.P.value)
+)) +
+  geom_col(fill = "steelblue") +
   coord_flip() +
+  theme_minimal() +
   labs(
-    title = "Top GO Biological Processes",
+    title = "Top Enriched GO Biological Processes",
     x = "GO Term",
-    y = "Combined Score"
-  ) +
-  theme_minimal()
+    y = "-log10 adjusted p-value"
+  )
 
-ggsave(
-  "results/figures/go_barplot.pdf",
-  plot = go_plot,
-  width = 8,
-  height = 6
-)
+ggsave("results/figures/go_barplot.pdf", p, width = 9, height = 6)
 
 # Print short summary
 cat("Enrichment analysis completed.\n")

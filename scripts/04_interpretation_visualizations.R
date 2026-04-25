@@ -1,4 +1,48 @@
 # 04_interpretation_visualizations.R
+#
+# Purpose:
+#   Generate interpretation-focused visualizations for the RNA-seq analysis.
+#   These plots support quality control, sample-level interpretation,
+#   differential expression diagnostics, and functional enrichment reporting.
+#
+# Input:
+#   - Airway RNA-seq dataset from Bioconductor (`airway`)
+#   - DESeq2 model using design:
+#       ~ cell + dex
+#   - Differential expression results generated internally from DESeq2
+#   - GO enrichment results:
+#       results/tables/go_enrichment.csv
+#
+# Output:
+#   - Sample distance heatmap:
+#       results/figures/sample_distance_heatmap.png
+#   - Size factor plot:
+#       results/figures/size_factors.png
+#   - Top up/downregulated genes plot:
+#       results/figures/top_up_down_genes.png
+#   - Adjusted p-value histogram:
+#       results/figures/padj_histogram.png
+#   - GO enrichment dot plot with gene overlap:
+#       results/figures/go_dotplot_overlap.png
+#
+# Method:
+#   - Reconstruct DESeq2 object from the airway dataset
+#   - Run DESeq2 differential expression analysis
+#   - Apply variance-stabilizing transformation (VST)
+#   - Generate sample-level and gene-level diagnostic plots
+#   - Visualize enriched GO terms using adjusted p-values and gene overlap
+#
+# Notes:
+#   - This script is designed to be run independently with Rscript
+#   - It does not rely on saved R workspace objects
+#   - Figures are saved as PNG files for easy GitHub rendering
+#
+# Example usage:
+#   Rscript scripts/04_interpretation_visualizations.R
+
+
+
+# 04_interpretation_visualizations.R
 
 .libPaths(c("/home/mariano/R/library", .libPaths()))
 
