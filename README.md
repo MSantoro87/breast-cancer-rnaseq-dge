@@ -47,7 +47,7 @@ A DESeq2 model was constructed to account for both:
 
 ```r
 design = ~ cell + dex
-
+```
 
 ## 2. Differential Expression Analysis
 - Statistical testing performed using DESeq2
