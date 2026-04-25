@@ -56,24 +56,22 @@ design = ~ cell + dex
 This defines a dexamethasone-responsive gene set.
 
 ## 3. Quality Control & Diagnostics
+- PCA analysis of samples
+- MA plot for expression changes
+- Dispersion plot for model quality
+- Sample-to-sample distance heatmap
+- Size factor normalization assessment
 
-To validate the robustness of the analysis:
+## 4. Gene-Level & Program Analyis
+- Volcano plot of differential expression
+- Heatmap of top differentially expressed genes
+- Counts plot for representative genes
+- Identification of upregulated and downregulated gene sets
 
-- PCA: global structure of samples
-- MA plot: fold-change vs expression relationship
-- Dispersion plot: gene-wise variance modeling
-- Sample distance heatmap: clustering of biological replicates
-
-## 4. Gene-Level Visualization
-- Volcano plot: global differential expression landscape
-- Heatmap: top 50 differentially expressed genes
-- Counts plot: expression pattern of representative genes
-
-## 5. Functional Enrichment Analysis
-Gene Ontology (GO) enrichment
-KEGG pathway analysis
-
-These analyses contextualize the transcriptional response in terms of biological processes and pathways.
+## 5. Functional Enrichment 
+- GO and KEGG enrichment analysis
+- Separate enrichment for upregulated and downregulated genes
+- GO barplot and dotplot visualizations
 
 ## Results Transcriptional Response
 
@@ -124,6 +122,22 @@ This analysis demonstrates how RNA-seq data can be leveraged to uncover mechanis
 - Dispersion Plot
 
 - GO Enrichment (Dotplot)
+
+### Functional Interpretation
+
+The dexamethasone-responsive transcriptional program can be decomposed into:
+
+- **Upregulated genes** associated with regulatory and signaling processes
+- **Downregulated genes** enriched in immune and inflammatory pathways
+
+This separation highlights distinct biological programs that are activated or suppressed in response to treatment.
+
+## 📊 Summary Statistics
+
+- Total genes tested: ~33,000  
+- Significant genes (padj < 0.05): ~4,000  
+- Upregulated genes: X  
+- Downregulated genes: Y  
 
 📁 Project Structure
 .
