@@ -130,8 +130,7 @@ The dexamethasone-responsive transcriptional program can be decomposed into:
 
 - **Upregulated genes** associated with regulatory and signaling processes
 - **Downregulated genes** enriched in immune and inflammatory pathways
-
-This separation highlights distinct biological programs that are activated or suppressed in response to treatment.
+- **This separation** highlights distinct biological programs that are activated or suppressed in response to treatment.
 
 ## 📊 Summary Statistics
 
