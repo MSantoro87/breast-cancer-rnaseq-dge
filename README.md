@@ -80,12 +80,12 @@ How does dexamethasone treatment affect gene expression in human airway smooth m
  - Heatmaps
  - Enrichment barplots
 
-Key Results
+## Key Results
 Identification of dexamethasone-responsive genes
 Clear separation of treated vs control samples in PCA
 Enriched biological pathways linked to immune and inflammatory responses
 
-How to Run
+## How to Run
 
 Clone the repository:
 
@@ -109,7 +109,7 @@ Project Structure
 ├── README.md
 └── .gitignore
 
-Reproducibility
+## Reproducibility
 
 The entire analysis is reproducible via the provided pipeline script.
 All figures and tables can be regenerated from raw data using the scripts in the scripts/ directory.
