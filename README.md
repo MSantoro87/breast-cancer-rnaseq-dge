@@ -92,8 +92,9 @@ PCA analysis shows clear separation between treated and untreated samples, confi
 -Individual gene plots confirm strong differential expression signals
 -Functional Interpretation
 
--Enrichment analysis reveals that the dexamethasone-responsive gene program is associated with:
+## Partials (in brief)
 
+Enrichment analysis reveals that the dexamethasone-responsive gene program is associated with:
 -Immune response pathways
 -Inflammatory signaling
 -Cellular stress responses
@@ -103,13 +104,13 @@ PCA analysis shows clear separation between treated and untreated samples, confi
 regulatory signaling cascades
 glucocorticoid-mediated biological processes
 
-🧠 Biological Interpretation
+## Biological Interpretation (staged partials)
 
-Dexamethasone induces a coordinated transcriptional program consistent with its role as a glucocorticoid regulator of inflammation.
+- Dexamethasone induces a coordinated transcriptional program consistent with its role as a glucocorticoid regulator of inflammation.
 
-The observed downregulation of immune-related pathways and modulation of signaling processes suggest suppression of inflammatory activity, aligning with known pharmacological effects.
+- The observed downregulation of immune-related pathways and modulation of signaling processes suggest suppression of inflammatory activity, aligning with known pharmacological effects.
 
-This analysis demonstrates how RNA-seq data can be leveraged to uncover mechanistic insights into treatment response.
+- This analysis demonstrates how RNA-seq data can be leveraged to uncover mechanistic insights into treatment response.
 
 - PCA Plot
 
