@@ -14,7 +14,7 @@
 
 ## Author
 
-**Mariano Santoro**
+**Dr. rer. nat.  Mariano Santoro**
 
 ---
 
