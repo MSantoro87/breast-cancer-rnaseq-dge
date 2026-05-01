@@ -73,16 +73,16 @@ This defines a dexamethasone-responsive gene set.
 - Separate enrichment for upregulated and downregulated genes
 - GO barplot and dotplot visualizations
 
-## Results Transcriptional Response
+## 6. Results Transcriptional Response
 
 Approximately ~4000 genes were significantly differentially expressed between treated and untreated samples, indicating a strong transcriptional response to dexamethasone. 
 This gene set defines a treatment-responsive transcriptional program.
 
-## Sample-Level Structure
+## 7. Sample-Level Structure
 
 PCA analysis shows clear separation between treated and untreated samples, confirming a strong treatment effect. Clustering also reflects donor-specific variability, validating the experimental design.
 
-## Model Diagnostics
+## 8. Model Diagnostics
 -MA plot confirms expected distribution of fold changes
 -Dispersion estimates indicate appropriate modeling of variability
 -Sample distance heatmap shows clustering by biological condition
@@ -92,7 +92,7 @@ PCA analysis shows clear separation between treated and untreated samples, confi
 -Individual gene plots confirm strong differential expression signals
 -Functional Interpretation
 
-## Partials (in brief)
+## 9. Partials (in brief)
 
 Enrichment analysis reveals that the dexamethasone-responsive gene program is associated with:
 -Immune response pathways
@@ -104,7 +104,7 @@ Enrichment analysis reveals that the dexamethasone-responsive gene program is as
 regulatory signaling cascades
 glucocorticoid-mediated biological processes
 
-## Biological Interpretation (staged partials)
+## 10. Biological Interpretation (staged partials)
 
 - Dexamethasone induces a coordinated transcriptional program consistent with its role as a glucocorticoid regulator of inflammation.
 
@@ -124,7 +124,7 @@ glucocorticoid-mediated biological processes
 
 - GO Enrichment (Dotplot)
 
-### Functional Interpretation
+### 11. Functional Interpretation
 
 The dexamethasone-responsive transcriptional program can be decomposed into:
 
@@ -132,7 +132,7 @@ The dexamethasone-responsive transcriptional program can be decomposed into:
 - **Downregulated genes** enriched in immune and inflammatory pathways
 - **This separation** highlights distinct biological programs that are activated or suppressed in response to treatment.
 
-## 📊 Summary Statistics
+## 12. Summary Statistics
 
 - Total genes tested: ~33,000  
 - Significant genes (padj < 0.05): ~4,000  
@@ -157,7 +157,7 @@ Run the full pipeline:
 - ``Rscript scripts/03_enrichment_analysis.R``
 - ``Rscript scripts/04_interpretation_visualizations.R``
 
-🚀 Future Work
+## 13. Future Work
 - Integrate machine learning (Python) to classify treatment conditions
 - Apply workflow to cancer RNA-seq datasets
 - Perform gene module and network analysis
