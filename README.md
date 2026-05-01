@@ -1,3 +1,4 @@
+
 # RNA-seq Differential Expression Analysis  
 ## Dexamethasone Response in Human Airway Smooth Muscle Cells
 
@@ -118,21 +119,3 @@ All figures and tables can be regenerated from raw data using the scripts in the
 - Containerization (Docker)
 - Workflow management (Snakemake or Nextflow)
 - Extend analysis to Machine Learning modeling
-
-
----
-
-## 💡 Final tip
-
-After pushing, go to your repo on :contentReference[oaicite:0]{index=0} and:
-
-- Add a **description**
-- Add **topics** (`rnaseq`, `deseq2`, `bioinformatics`, etc.)
-
-This makes it look *much* more professional instantly.
-
----
-
-If you want next-level polish, I can:
-- add multiple figures (heatmap + PCA like EyeTism)
-- or turn this into a **portfolio-grade README** with sections like “Highlights” and “Key Insights”
