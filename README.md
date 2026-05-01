@@ -65,17 +65,18 @@ How does dexamethasone treatment affect gene expression in human airway smooth m
    ```r
    design = ~ cell + dex
 
-4. Quality control
+4. **Quality control**
  - PCA plot
  - MA plot
  - Dispersion plot
  - Sample distance heatmap
-5. Gene-level analysis
+
+5. **Gene-level analysis**
  - Identify significantly upregulated and downregulated genes
-6. Functional enrichment
+6. **Functional enrichment**
  - Gene Ontology (GO)
  - KEGG pathways
-7.Visualization
+7. **Visualization**
  - Volcano plots
  - Heatmaps
  - Enrichment barplots
