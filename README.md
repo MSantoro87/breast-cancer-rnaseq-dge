@@ -62,7 +62,7 @@ This defines a dexamethasone-responsive gene set.
 - Sample-to-sample distance heatmap
 - Size factor normalization assessment
 
-## 4. Gene-Level & Program Analyis
+## 4. Gene-Level & Program Analysis
 - Volcano plot of differential expression
 - Heatmap of top differentially expressed genes
 - Counts plot for representative genes
