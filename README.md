@@ -153,9 +153,9 @@ The dexamethasone-responsive transcriptional program can be decomposed into:
 
 Run the full pipeline:
 
-- Rscript scripts/02_deseq2_analysis.R
-- Rscript scripts/03_enrichment_analysis.R
-- Rscript scripts/04_interpretation_visualizations.R
+-``Rscript scripts/02_deseq2_analysis.R``
+-``Rscript scripts/03_enrichment_analysis.R``
+-``Rscript scripts/04_interpretation_visualizations.R``
 
 🚀 Future Work
 - Integrate machine learning (Python) to classify treatment conditions
