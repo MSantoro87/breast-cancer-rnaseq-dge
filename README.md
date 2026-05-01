@@ -54,13 +54,13 @@ How does dexamethasone treatment affect gene expression in human airway smooth m
 ## Workflow
 
 1. **Environment check**  
-   Validate R version and installed packages.
+ - Validate R version and installed packages.
 
 2. **Dataset loading**  
-   Import and inspect RNA-seq count data.
+ - Import and inspect RNA-seq count data.
 
 3. **Differential expression analysis**  
-   Fit DESeq2 model:
+ - Fit DESeq2 model:
 
    ```r
    design = ~ cell + dex
