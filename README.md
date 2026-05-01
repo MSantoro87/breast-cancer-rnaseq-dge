@@ -152,13 +152,14 @@ The dexamethasone-responsive transcriptional program can be decomposed into:
 🔁 Reproducibility
 
 ## 13. Temporary pipeline
+
 ## Run the pipeline
 
 ```bash
 chmod +x run.sh
 ./run.sh
 
-## 13. Future Work
+## 14. Future Work
 - Integrate machine learning (Python) to classify treatment conditions
 - Apply workflow to cancer RNA-seq datasets
 - Perform gene module and network analysis
