@@ -151,6 +151,7 @@ The dexamethasone-responsive transcriptional program can be decomposed into:
 └── README.md
 🔁 Reproducibility
 
+## 13. Temporary pipeline
 Run the full pipeline:
 
 - ``Rscript scripts/02_deseq2_analysis.R``
