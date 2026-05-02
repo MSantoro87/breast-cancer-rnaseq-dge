@@ -93,7 +93,7 @@ Run the pipeline:
 ``chmod +x scripts/run_pipeline.sh
 ./scripts/run_pipeline.sh``
 
-Project Structure
+## Project Structure
 
 .
 ├── environment/          # R environment and package setup
