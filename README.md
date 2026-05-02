@@ -95,15 +95,22 @@ Run the pipeline:
 
 ## Project Structure
 
-.
-├── environment/          # R environment and package setup
+```text
+airway-rnaseq-dge/
+├── environment/
+│   └── R_environment.txt        # R session and package information
 ├── results/
-│   ├── figures/         # Generated plots
-│   └── tables/          # Output data tables
-├── scripts/             # R scripts and Bash pipeline runner
-│   └── run_pipeline.sh
-├── README.md
-└── .gitignore
+│   ├── figures/                 # Generated plots and visual outputs
+│   └── tables/                  # Differential expression and enrichment tables
+├── scripts/
+│   ├── run_pipeline.sh          # Bash script to execute the full workflow
+│   ├── 00_check_environment.R   # Environment and dependency checks
+│   ├── 01_download_dataset.R    # Dataset loading and preparation
+│   ├── 02_deseq2_analysis.R     # Differential expression analysis
+│   ├── 03_enrichment_analysis.R # Functional enrichment analysis
+│   └── 04_*.R / 05_*.R          # Visualization and downstream interpretation
+├── .gitignore
+└── README.md
 
 ## Reproducibility
 
