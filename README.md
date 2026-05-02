@@ -17,7 +17,7 @@
 
 This project presents a reproducible RNA-seq differential gene expression (DGE) analysis of human airway smooth muscle cells treated with dexamethasone.
 
-The analysis is based on the **Bioconductor airway dataset** and implemented using a structured pipeline combining **R** and **Bash scripting**.
+The analysis is based on the **Bioconductor airway dataset** and implemented using a structured pipeline combining **R** and **Bash scripting**, planned to be implemented with **Machine Learning modeling** approach (in progress)
 
 ---
 
