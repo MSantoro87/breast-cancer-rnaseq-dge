@@ -1,6 +1,7 @@
 
-# RNA-seq Differential Expression Analysis  
-## Dexamethasone Response in Human Airway Smooth Muscle Cells
+## RNA-seq Differential Expression Analysis - Dexamethasone Response in Human Airway Smooth Muscle Cells
+(Authored by Dr. Mariano Santoro)
+
 
 <p align="center">
   <img src="results/figures/volcano_plot.png" width="650">
@@ -9,12 +10,6 @@
 <p align="center">
   <em>Volcano plot highlighting genes significantly regulated by dexamethasone treatment.</em>
 </p>
-
----
-
-## Author
-
-**Dr. rer. nat.  Mariano Santoro**
 
 ---
 
