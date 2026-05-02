@@ -110,7 +110,8 @@ airway-rnaseq-dge/
 │   ├── 03_enrichment_analysis.R # Functional enrichment analysis
 │   └── 04_*.R / 05_*.R          # Visualization and downstream interpretation
 ├── .gitignore
-└── README.md```
+└── README.md
+```
 
 ## Reproducibility
 
