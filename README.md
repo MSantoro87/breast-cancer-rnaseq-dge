@@ -97,20 +97,24 @@ Run the pipeline:
 
 ```text
 airway-rnaseq-dge/
-├── environment/
-│   └── R_environment.txt        # R session and package information
-├── results/
-│   ├── figures/                 # Generated plots and visual outputs
-│   └── tables/                  # Differential expression and enrichment tables
 ├── scripts/
-│   ├── run_pipeline.sh          # Bash script to execute the full workflow
-│   ├── 00_check_environment.R   # Environment and dependency checks
-│   ├── 01_download_dataset.R    # Dataset loading and preparation
-│   ├── 02_deseq2_analysis.R     # Differential expression analysis
-│   ├── 03_enrichment_analysis.R # Functional enrichment analysis
-│   └── 04_*.R / 05_*.R          # Visualization and downstream interpretation
-├── .gitignore
-└── README.md
+│   ├── 00_check_environment.R
+│   ├── 01_download_dataset.R
+│   ├── 02_deseq2_analysis.R
+│   ├── 03_enrichment_analysis.R
+│   ├── 04_interpretation_visualizations.R
+│   ├── 05_up_down_enrichment.R
+│   └── run_pipeline.sh              # Bash pipeline orchestrator
+│
+├── results/
+│   ├── figures/                    # Volcano plots, heatmaps, enrichment plots
+│   └── tables/                     # DE results and enrichment outputs
+│
+├── environment/
+│   └── R_environment.txt           # R session info and dependencies
+│
+├── README.md
+└── .gitignore
 ```
 
 ## Reproducibility
