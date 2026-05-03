@@ -1,63 +1,27 @@
-# 03_enrichment_analysis.R
-#
-# Purpose:
-#   Perform functional enrichment analysis on significantly differentially
-#   expressed genes identified by DESeq2. The script maps genes to biological
-#   processes and pathways using the enrichR API and summarizes the results
-#   through tables and visualization.
-#
-# Input:
-#   - Differential expression results:
-#       results/tables/deseq2_results.csv
-#   - Gene annotation derived from airway dataset (gene_id → gene symbol)
-#
-# Output:
-#   - Gene Ontology (GO) enrichment table:
-#       results/tables/go_enrichment.csv
-#   - KEGG pathway enrichment table:
-#       results/tables/kegg_enrichment.csv
-#   - GO enrichment barplot:
-#       results/figures/go_barplot.pdf
-#
-# Method:
-#   - Filter significant genes (padj < 0.05)
-#   - Map Ensembl gene IDs to gene symbols
-#   - Perform enrichment using enrichR:
-#       • GO Biological Process 2021
-#       • KEGG 2021 Human
-#   - Visualize top enriched GO terms
-#
-# Notes:
-#   - Only genes with valid gene symbols are used for enrichment
-#   - Results are ranked by adjusted p-value
-#   - Enrichment reflects overrepresented biological processes in the
-#     dexamethasone-responsive gene set
-#
-# Example usage:
-#   Rscript scripts/03_enrichment_analysis.R
+#!/usr/bin/env Rscript
 
 # 03_enrichment_analysis.R
-# Functional enrichment analysis using enrichR
-# Input: DESeq2 results table
-# Output: GO and KEGG enrichment tables + GO barplot
+# Purpose: Run GO and KEGG enrichment analysis on significant DESeq2 genes.
 
-.libPaths(c("/home/mariano/R/library", .libPaths()))
+suppressPackageStartupMessages({
+  library(enrichR)
+  library(ggplot2)
+  library(DESeq2)
+  library(airway)
+})
 
-# Load libraries
-library(enrichR)
-library(ggplot2)
+dir.create("results/tables", recursive = TRUE, showWarnings = FALSE)
+dir.create("results/figures", recursive = TRUE, showWarnings = FALSE)
 
-# Load DESeq2 results
-res_df <- read.csv("results/tables/deseq2_results.csv")
+message("Loading significant DESeq2 results...")
 
-# Filter significant genes
-sig_genes <- res_df[
-  !is.na(res_df$padj) & res_df$padj < 0.05,
-]
+sig_genes <- read.csv("results/tables/deseq2_results_significant.csv")
 
-# Load airway annotation again to map Ensembl IDs to gene symbols
-library(DESeq2)
-library(airway)
+if (nrow(sig_genes) == 0) {
+  stop("No significant genes found in deseq2_results_significant.csv")
+}
+
+message("Loading airway annotation...")
 
 data("airway")
 
@@ -68,19 +32,22 @@ dds <- DESeqDataSet(
 
 gene_info <- as.data.frame(rowData(dds))[, c("gene_id", "symbol")]
 
-# Merge DESeq2 results with gene symbols
 sig_genes <- merge(
   sig_genes,
   gene_info,
   by = "gene_id"
 )
 
-# Clean gene symbol list
 gene_symbols <- unique(sig_genes$symbol)
 gene_symbols <- gene_symbols[!is.na(gene_symbols)]
 gene_symbols <- gene_symbols[gene_symbols != ""]
 
-# Run enrichment analysis
+if (length(gene_symbols) == 0) {
+  stop("No valid gene symbols found for enrichment analysis.")
+}
+
+message("Running enrichR analysis...")
+
 selected_dbs <- c(
   "GO_Biological_Process_2021",
   "KEGG_2021_Human"
@@ -88,45 +55,51 @@ selected_dbs <- c(
 
 enrich_results <- enrichr(gene_symbols, selected_dbs)
 
-# Save enrichment tables
+go_results <- enrich_results[["GO_Biological_Process_2021"]]
+kegg_results <- enrich_results[["KEGG_2021_Human"]]
+
 write.csv(
-  enrich_results[["GO_Biological_Process_2021"]],
+  go_results,
   "results/tables/go_enrichment.csv",
   row.names = FALSE
 )
 
 write.csv(
-  enrich_results[["KEGG_2021_Human"]],
+  kegg_results,
   "results/tables/kegg_enrichment.csv",
   row.names = FALSE
 )
 
-# Create GO barplot
-go <- enrich_results[["GO_Biological_Process_2021"]]
+if (!is.null(go_results) && nrow(go_results) > 0) {
+  go_top <- go_results[order(go_results$Adjusted.P.value), ]
+  go_top <- head(go_top, 10)
 
-go_top <- go[order(go$Adjusted.P.value), ][1:10, ]
+  p <- ggplot(
+    go_top,
+    aes(
+      x = reorder(Term, Adjusted.P.value),
+      y = -log10(Adjusted.P.value)
+    )
+  ) +
+    geom_col() +
+    coord_flip() +
+    theme_minimal() +
+    labs(
+      title = "Top Enriched GO Biological Processes",
+      x = "GO term",
+      y = "-log10 adjusted p-value"
+    )
 
-p <- ggplot(go_top, aes(
-  x = reorder(Term, -Adjusted.P.value),
-  y = -log10(Adjusted.P.value)
-)) +
-  geom_col(fill = "steelblue") +
-  coord_flip() +
-  theme_minimal() +
-  labs(
-    title = "Top Enriched GO Biological Processes",
-    x = "GO Term",
-    y = "-log10 adjusted p-value"
+  ggsave(
+    "results/figures/go_barplot.pdf",
+    p,
+    width = 9,
+    height = 6
   )
+}
 
-ggsave("results/figures/go_barplot.pdf", p, width = 9, height = 6)
-
-# Print short summary
-cat("Enrichment analysis completed.\n")
-cat("Number of significant genes:", nrow(sig_genes), "\n")
-cat("Number of unique gene symbols:", length(gene_symbols), "\n")
-
-# Save enrichment analysis
-
-write.csv(go_results, "results/tables/go_enrichment.csv")
-write.csv(kegg_results, "results/tables/kegg_enrichment.csv")
+message("Enrichment analysis completed.")
+message("Significant genes used: ", nrow(sig_genes))
+message("Unique gene symbols used: ", length(gene_symbols))
+message("GO terms returned: ", nrow(go_results))
+message("KEGG terms returned: ", nrow(kegg_results))
