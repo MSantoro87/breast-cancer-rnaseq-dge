@@ -227,6 +227,7 @@ All results can be regenerated from the repository root with:
 ```text
 ./scripts/run_pipeline.sh
 quarto render reports/airway_rnaseq_report.qmd
+```
 
 This recreates:
 
