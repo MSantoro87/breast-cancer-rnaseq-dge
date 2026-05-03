@@ -1,0 +1,18 @@
+# Analysis parameters
+
+# Differential expression thresholds
+padj_cutoff: 0.05
+log2fc_cutoff: 1
+
+# Visualization
+top_n_heatmap: 50
+
+# Enrichment
+enrichment_databases:
+  - GO_Biological_Process_2021
+  - KEGG_2021_Human
+
+# Plot settings
+plot_width: 8
+plot_height: 6
+dpi: 300
