@@ -132,3 +132,16 @@ pheatmap(
 dev.off()
 
 cat("DESeq2 analysis completed. Results saved.\n")
+
+
+## After running DESeq2
+
+res <- results(dds)
+
+write.csv(as.data.frame(res),
+          "results/tables/deseq2_results_all.csv")
+
+sig <- subset(res, padj < 0.05)
+
+write.csv(as.data.frame(sig),
+          "results/tables/deseq2_results_significant.csv")

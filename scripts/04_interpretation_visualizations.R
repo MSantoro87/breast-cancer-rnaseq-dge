@@ -87,6 +87,9 @@ pheatmap(
   main = "Sample-to-sample distance heatmap"
 )
 
+pdf("results/figures/heatmap_top50.pdf")
+
+# plot code
 dev.off()
 
 # -----------------------------

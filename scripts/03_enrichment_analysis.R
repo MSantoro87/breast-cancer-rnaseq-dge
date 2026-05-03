@@ -125,3 +125,8 @@ ggsave("results/figures/go_barplot.pdf", p, width = 9, height = 6)
 cat("Enrichment analysis completed.\n")
 cat("Number of significant genes:", nrow(sig_genes), "\n")
 cat("Number of unique gene symbols:", length(gene_symbols), "\n")
+
+# Save enrichment analysis
+
+write.csv(go_results, "results/tables/go_enrichment.csv")
+write.csv(kegg_results, "results/tables/kegg_enrichment.csv")

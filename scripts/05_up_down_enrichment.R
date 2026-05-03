@@ -104,3 +104,6 @@ write.csv(
 cat("Up/down enrichment completed.\n")
 cat("Upregulated genes:", nrow(up_genes), "\n")
 cat("Downregulated genes:", nrow(down_genes), "\n")
+
+write.csv(up_enrichment, "results/tables/upregulated_enrichment.csv")
+write.csv(down_enrichment, "results/tables/downregulated_enrichment.csv")

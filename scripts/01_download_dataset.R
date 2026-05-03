@@ -47,3 +47,6 @@ print(gse)
 
 # Save metadata object
 saveRDS(gse, file = "data/raw/GSE183947_geo_metadata.rds")
+
+# Save processed data
+saveRDS(airway, "data/processed/airway.rds")
