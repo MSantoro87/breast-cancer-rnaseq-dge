@@ -185,4 +185,30 @@ if (file.exists("results/tables/go_enrichment.csv")) {
   }
 }
 
+# Top 50 most significant genes heatmap
+top50_genes <- head(res_df[order(res_df$padj), "gene_id"], 50)
+
+heatmap_matrix <- assay(vsd)[top50_genes, ]
+heatmap_matrix <- heatmap_matrix - rowMeans(heatmap_matrix)
+
+annotation_col <- as.data.frame(colData(dds)[, "dex", drop = FALSE])
+
+png("results/figures/png/heatmap_top50.png", width = 1000, height = 1200, res = 150)
+pheatmap(
+  heatmap_matrix,
+  annotation_col = annotation_col,
+  show_rownames = FALSE,
+  main = "Top 50 differentially expressed genes"
+)
+dev.off()
+
+pdf("results/figures/pdf/heatmap_top50.pdf", width = 8, height = 10)
+pheatmap(
+  heatmap_matrix,
+  annotation_col = annotation_col,
+  show_rownames = FALSE,
+  main = "Top 50 differentially expressed genes"
+)
+dev.off()
+
 message("Interpretation visualizations completed.")
