@@ -109,7 +109,7 @@ scripts/
 └── run_pipeline.sh
 ```
 
-Pipeline steps
+### Pipeline steps
 
 1. Environment check
 - Validate R version and required packages
