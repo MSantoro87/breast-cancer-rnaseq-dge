@@ -11,3 +11,7 @@ GitHub_token
 GitHub_token
 GitHub_token
 *.deb
+*.deb
+_files/
+*.knit.md
+.quarto/
