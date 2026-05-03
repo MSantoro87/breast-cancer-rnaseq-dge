@@ -161,8 +161,9 @@ Run the full pipeline:
 
 airway-rnaseq-dge/
 ├── config/
-│   └── config.yaml              # Centralized analysis parameters
-├── scripts/
+│   └── config.yaml              # Analysis parameters
+│
+├── scripts/                     # Pipeline (00–05)
 │   ├── 00_check_environment.R
 │   ├── 01_download_dataset.R
 │   ├── 02_deseq2_analysis.R
@@ -170,21 +171,22 @@ airway-rnaseq-dge/
 │   ├── 04_interpretation_visualizations.R
 │   ├── 05_up_down_enrichment.R
 │   └── run_pipeline.sh
+│
 ├── data/
 │   └── processed/               # Intermediate R objects
+│
 ├── results/
-│   ├── tables/                  # DE and enrichment outputs
+│   ├── tables/                 # Output tables (DE + enrichment)
 │   └── figures/
-│       ├── png/                 # Preview-ready figures
-│       └── pdf/                 # Publication-quality figures
-├── reports/
+│       ├── png/                # Preview figures
+│       └── pdf/                # Publication-quality figures
+│
+├── reports/                     # Quarto analysis report
 │   ├── airway_rnaseq_report.qmd
 │   └── airway_rnaseq_report.html
-├── environment/
-│   └── R_environment.txt
-├── README.md
-└── .gitignore
-
+│
+├── environment/                # R session info
+└── README.md
 ---
 
 ## Configuration
