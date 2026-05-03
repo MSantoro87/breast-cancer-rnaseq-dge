@@ -15,3 +15,5 @@ GitHub_token
 _files/
 *.knit.md
 .quarto/
+.venv/
+.ipynb_checkpoints/
