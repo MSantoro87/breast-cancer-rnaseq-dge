@@ -1,13 +1,32 @@
+#!/usr/bin/env Rscript
+
 # 05_up_down_enrichment.R
-# Purpose: Separate enrichment analysis for upregulated and downregulated genes
-# Input: DESeq2 results from airway RNA-seq analysis
-# Output: up/down gene tables, enrichment tables, summary statistics
+# Purpose: Run enrichment separately for upregulated and downregulated genes.
 
-.libPaths(c("/home/mariano/R/library", .libPaths()))
+suppressPackageStartupMessages({
+  library(enrichR)
+  library(DESeq2)
+  library(airway)
+  library(yaml)
+})
 
-library(DESeq2)
-library(airway)
-library(enrichR)
+# Load config
+config <- yaml::read_yaml("config/config.yaml")
+enrichment_databases <- config$enrichment_databases
+
+# Output directory
+dir.create("results/tables", recursive = TRUE, showWarnings = FALSE)
+
+message("Loading DESeq2 results...")
+
+up_genes <- read.csv("results/tables/deseq2_results_upregulated.csv")
+down_genes <- read.csv("results/tables/deseq2_results_downregulated.csv")
+
+if (nrow(up_genes) == 0 || nrow(down_genes) == 0) {
+  stop("Upregulated or downregulated gene list is empty.")
+}
+
+message("Loading gene annotation...")
 
 data("airway")
 
@@ -16,94 +35,43 @@ dds <- DESeqDataSet(
   design = ~ cell + dex
 )
 
-dds$dex <- relevel(dds$dex, ref = "untrt")
-dds <- DESeq(dds)
-
-res <- results(dds, contrast = c("dex", "trt", "untrt"))
-
-res_df <- as.data.frame(res)
-res_df$gene_id <- rownames(res_df)
-res_df <- res_df[!is.na(res_df$padj), ]
-
 gene_info <- as.data.frame(rowData(dds))[, c("gene_id", "symbol")]
 
-res_annotated <- merge(
-  res_df,
-  gene_info,
-  by = "gene_id"
-)
+# Merge gene symbols
+up_genes <- merge(up_genes, gene_info, by = "gene_id")
+down_genes <- merge(down_genes, gene_info, by = "gene_id")
 
-res_annotated <- res_annotated[
-  !is.na(res_annotated$symbol) & res_annotated$symbol != "",
-]
+# Clean gene symbols
+clean_symbols <- function(x) {
+  x <- unique(x)
+  x <- x[!is.na(x)]
+  x <- x[x != ""]
+  return(x)
+}
 
-sig_genes <- res_annotated[res_annotated$padj < 0.05, ]
+up_symbols <- clean_symbols(up_genes$symbol)
+down_symbols <- clean_symbols(down_genes$symbol)
 
-up_genes <- sig_genes[sig_genes$log2FoldChange > 0, ]
-down_genes <- sig_genes[sig_genes$log2FoldChange < 0, ]
+message("Running enrichment for UPREGULATED genes...")
+up_results <- enrichr(up_symbols, enrichment_databases)
 
-write.csv(up_genes, "results/tables/upregulated_genes.csv", row.names = FALSE)
-write.csv(down_genes, "results/tables/downregulated_genes.csv", row.names = FALSE)
+message("Running enrichment for DOWNREGULATED genes...")
+down_results <- enrichr(down_symbols, enrichment_databases)
 
-up_symbols <- unique(up_genes$symbol)
-down_symbols <- unique(down_genes$symbol)
+# Extract results
+go_up <- up_results[["GO_Biological_Process_2021"]]
+kegg_up <- up_results[["KEGG_2021_Human"]]
 
-selected_dbs <- c(
-  "GO_Biological_Process_2021",
-  "KEGG_2021_Human"
-)
+go_down <- down_results[["GO_Biological_Process_2021"]]
+kegg_down <- down_results[["KEGG_2021_Human"]]
 
-up_enrich <- enrichr(up_symbols, selected_dbs)
-down_enrich <- enrichr(down_symbols, selected_dbs)
+# Save results
+write.csv(go_up, "results/tables/go_enrichment_upregulated.csv", row.names = FALSE)
+write.csv(kegg_up, "results/tables/kegg_enrichment_upregulated.csv", row.names = FALSE)
 
-write.csv(
-  up_enrich[["GO_Biological_Process_2021"]],
-  "results/tables/go_enrichment_upregulated.csv",
-  row.names = FALSE
-)
+write.csv(go_down, "results/tables/go_enrichment_downregulated.csv", row.names = FALSE)
+write.csv(kegg_down, "results/tables/kegg_enrichment_downregulated.csv", row.names = FALSE)
 
-write.csv(
-  down_enrich[["GO_Biological_Process_2021"]],
-  "results/tables/go_enrichment_downregulated.csv",
-  row.names = FALSE
-)
-
-write.csv(
-  up_enrich[["KEGG_2021_Human"]],
-  "results/tables/kegg_enrichment_upregulated.csv",
-  row.names = FALSE
-)
-
-write.csv(
-  down_enrich[["KEGG_2021_Human"]],
-  "results/tables/kegg_enrichment_downregulated.csv",
-  row.names = FALSE
-)
-
-summary_stats <- data.frame(
-  metric = c(
-    "genes_tested",
-    "significant_genes_padj_0.05",
-    "upregulated_genes",
-    "downregulated_genes"
-  ),
-  value = c(
-    nrow(res_df),
-    nrow(sig_genes),
-    nrow(up_genes),
-    nrow(down_genes)
-  )
-)
-
-write.csv(
-  summary_stats,
-  "results/tables/summary_statistics.csv",
-  row.names = FALSE
-)
-
-cat("Up/down enrichment completed.\n")
-cat("Upregulated genes:", nrow(up_genes), "\n")
-cat("Downregulated genes:", nrow(down_genes), "\n")
-
-write.csv(up_enrichment, "results/tables/upregulated_enrichment.csv")
-write.csv(down_enrichment, "results/tables/downregulated_enrichment.csv")
+message("Up/down enrichment analysis completed.")
+message("Upregulated genes used: ", length(up_symbols))
+message("Downregulated genes used: ", length(down_symbols))

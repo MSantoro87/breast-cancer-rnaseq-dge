@@ -1,25 +1,34 @@
 #!/usr/bin/env Rscript
 
 # 04_interpretation_visualizations.R
-# Purpose: Generate QC, diagnostic, and interpretation figures for the RNA-seq analysis.
+# Purpose: Generate QC, diagnostic, and interpretation figures using config-driven settings.
 
 suppressPackageStartupMessages({
   library(DESeq2)
-  library(airway)
   library(ggplot2)
   library(pheatmap)
+  library(yaml)
 })
 
+# Load config
+config <- yaml::read_yaml("config/config.yaml")
+
+top_n_heatmap <- config$top_n_heatmap
+plot_width <- config$plot_width
+plot_height <- config$plot_height
+dpi <- config$dpi
+
+# Output directories
 dir.create("results/figures/png", recursive = TRUE, showWarnings = FALSE)
 dir.create("results/figures/pdf", recursive = TRUE, showWarnings = FALSE)
 
-save_plot <- function(plot, filename, width = 8, height = 6) {
+save_plot <- function(plot, filename, width = plot_width, height = plot_height) {
   ggsave(
     filename = file.path("results/figures/png", paste0(filename, ".png")),
     plot = plot,
     width = width,
     height = height,
-    dpi = 300
+    dpi = dpi
   )
 
   ggsave(
@@ -53,7 +62,7 @@ p <- ggplot(pca_data, aes(PC1, PC2, color = dex)) +
 save_plot(p, "pca_samples", width = 7, height = 5)
 
 # MA plot
-png("results/figures/png/ma_plot.png", width = 1000, height = 800, res = 150)
+png("results/figures/png/ma_plot.png", width = 1000, height = 800, res = dpi)
 plotMA(res, ylim = c(-5, 5), main = "DESeq2 MA plot")
 dev.off()
 
@@ -62,7 +71,7 @@ plotMA(res, ylim = c(-5, 5), main = "DESeq2 MA plot")
 dev.off()
 
 # Dispersion plot
-png("results/figures/png/dispersion_plot.png", width = 1000, height = 800, res = 150)
+png("results/figures/png/dispersion_plot.png", width = 1000, height = 800, res = dpi)
 plotDispEsts(dds, main = "DESeq2 dispersion estimates")
 dev.off()
 
@@ -137,7 +146,7 @@ save_plot(p, "top_up_down_genes", width = 8, height = 7)
 sample_dists <- dist(t(assay(vsd)))
 sample_dist_matrix <- as.matrix(sample_dists)
 
-png("results/figures/png/sample_distance_heatmap.png", width = 1000, height = 900, res = 150)
+png("results/figures/png/sample_distance_heatmap.png", width = 1000, height = 900, res = dpi)
 pheatmap(
   sample_dist_matrix,
   clustering_distance_rows = sample_dists,
@@ -152,6 +161,32 @@ pheatmap(
   clustering_distance_rows = sample_dists,
   clustering_distance_cols = sample_dists,
   main = "Sample-to-sample distance heatmap"
+)
+dev.off()
+
+# Top significant genes heatmap
+top_genes_heatmap <- head(res_df[order(res_df$padj), "gene_id"], top_n_heatmap)
+
+heatmap_matrix <- assay(vsd)[top_genes_heatmap, ]
+heatmap_matrix <- heatmap_matrix - rowMeans(heatmap_matrix)
+
+annotation_col <- as.data.frame(colData(dds)[, "dex", drop = FALSE])
+
+png("results/figures/png/heatmap_top50.png", width = 1000, height = 1200, res = dpi)
+pheatmap(
+  heatmap_matrix,
+  annotation_col = annotation_col,
+  show_rownames = FALSE,
+  main = paste("Top", top_n_heatmap, "differentially expressed genes")
+)
+dev.off()
+
+pdf("results/figures/pdf/heatmap_top50.pdf", width = 8, height = 10)
+pheatmap(
+  heatmap_matrix,
+  annotation_col = annotation_col,
+  show_rownames = FALSE,
+  main = paste("Top", top_n_heatmap, "differentially expressed genes")
 )
 dev.off()
 
@@ -184,31 +219,5 @@ if (file.exists("results/tables/go_enrichment.csv")) {
     save_plot(p, "go_dotplot_overlap", width = 9, height = 6)
   }
 }
-
-# Top 50 most significant genes heatmap
-top50_genes <- head(res_df[order(res_df$padj), "gene_id"], 50)
-
-heatmap_matrix <- assay(vsd)[top50_genes, ]
-heatmap_matrix <- heatmap_matrix - rowMeans(heatmap_matrix)
-
-annotation_col <- as.data.frame(colData(dds)[, "dex", drop = FALSE])
-
-png("results/figures/png/heatmap_top50.png", width = 1000, height = 1200, res = 150)
-pheatmap(
-  heatmap_matrix,
-  annotation_col = annotation_col,
-  show_rownames = FALSE,
-  main = "Top 50 differentially expressed genes"
-)
-dev.off()
-
-pdf("results/figures/pdf/heatmap_top50.pdf", width = 8, height = 10)
-pheatmap(
-  heatmap_matrix,
-  annotation_col = annotation_col,
-  show_rownames = FALSE,
-  main = "Top 50 differentially expressed genes"
-)
-dev.off()
 
 message("Interpretation visualizations completed.")
