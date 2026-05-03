@@ -159,6 +159,7 @@ Run the full pipeline:
 
 ## Project Structure
 
+```text
 airway-rnaseq-dge/
 ├── config/
 │   └── config.yaml              # Analysis parameters
@@ -187,6 +188,8 @@ airway-rnaseq-dge/
 │
 ├── environment/                # R session info
 └── README.md
+```
+
 ---
 
 ## Configuration
